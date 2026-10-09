@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 출판 정보 — 마음색 그림책 메이커</title>
+<link rel="icon" type="image/svg+xml" href="../shared/assets/favicon.svg">
+<link rel="stylesheet" href="../shared/colorm.css">
+<style>
+.prev-box{background:var(--tint);border:1px solid var(--ab);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.7;color:#5e575b;white-space:pre-wrap}
+.lang-tag{display:inline-block;font-size:11px;font-weight:900;padding:3px 8px;border-radius:999px;margin:10px 0 6px}
+.lang-kr{background:var(--soft);color:var(--m)}
+.lang-en{background:#eef3ff;color:#3a5bd9}
+.step h2 .auto-tag{display:inline-block;margin-left:6px;font-size:11px;font-weight:800;letter-spacing:0;text-transform:none;color:var(--m);background:var(--soft);border:0;border-radius:999px;padding:3px 9px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div id="cmHeader"></div>
+<header class="hero hero-sub">
+<p class="sub">부크크·교보문고 퍼플·유페이퍼·아마존 KDP 같은 곳에 등록할 때 필요한 정보(제목·저자·소개·키워드·분류·AI 활용 고지)를 정리해드려요. 이전 단계 내용이 미리 채워져 있으니 작가명 등 빈칸만 채우면 됩니다.</p>
+</header>
+
+<main class="wrap">
+<section class="card">
+<div class="step"><span>STEP 01</span><h2>이전 단계 정보 <span class="auto-tag">자동 채움</span></h2></div>
+<p class="help">기획·스토리·캐릭터·표지에서 만든 내용으로 아래 항목이 미리 채워집니다. 고친 뒤 이전 단계 내용으로 되돌리고 싶으면 아래 버튼을 눌러주세요.</p>
+<div class="actions"><button class="btn ghost" type="button" onclick="refill()">이전 단계 정보로 다시 채우기</button></div>
+<div id="prevPreview" class="prev-box" style="margin-top:14px">아직 불러온 정보가 없습니다.</div>
+</section>
+
+<form id="publishForm">
+<section class="card">
+<div class="step"><span>STEP 02</span><h2>도서 기본 정보</h2></div>
+<div class="grid">
+<label>제목<input id="pTitle" placeholder="예: 빨간 숲의 전설"></label>
+<label>부제 <small>(선택)</small><input id="pSubtitle" placeholder="예: 루루와 토토의 용서 여행"></label>
+</div>
+<div class="grid">
+<label>글 작가<input id="pAuthor" placeholder="작가 이름 또는 필명"></label>
+<label>그림 작가 <small>(비워두면 글 작가와 같음)</small><input id="pIllustrator" placeholder="그림을 그린(구성한) 사람"></label>
+</div>
+<p class="help" style="margin-top:12px">발행처·발행일·판차·ISBN·가격은 등록하는 플랫폼 화면에서 직접 정하거나 발급받기 때문에 여기서는 묻지 않아요.</p>
+</section>
+
+<section class="card">
+<div class="step"><span>STEP 03</span><h2>어디에 등록하나요?</h2></div>
+<p class="help">고른 곳마다 <b>등록 화면에 그대로 복사해 넣을 수 있는 입력표</b>를 만들어 드려요. 여러 곳을 골라도 돼요.</p>
+<input type="hidden" id="pPlatforms">
+<div class="mind-chips" id="platformChips"></div>
+</section>
+
+<section class="card">
+<div class="step"><span>STEP 04</span><h2>독자 · 분류 · 판형</h2></div>
+<div class="grid">
+<label>대상 독자<select id="pAudience"><option>유아 5~7세</option><option>초등 저학년</option><option>초등 고학년</option><option>청소년</option><option>전체 연령</option></select></label>
+<label>도서 분류<input id="pCategory" placeholder="예: 어린이 > 그림책 > 창작동화"></label>
+</div>
+<div class="grid3">
+<label>언어<select id="pLang"><option>한국어</option><option>English</option><option>한국어·English</option></select></label>
+<label>쪽수<select id="pPages"><option value="24">24쪽</option><option value="32">32쪽</option><option value="40">40쪽</option><option value="48">48쪽</option></select></label>
+<label>판형<select id="pTrim"><option>세로형 3:4 (예: 210×280mm)</option><option>가로형 4:3 (예: 280×210mm)</option><option>정사각형 1:1 (예: 230×230mm)</option><option>와이드 16:9 (예: 297×167mm)</option><option>슬림 세로 9:16 (예: 158×280mm)</option></select></label>
+</div>
+<p class="help" style="margin-top:12px">쪽수는 장면 수를 기준으로 표지·속표지·판권면까지 고려해 추천한 값이고, 판형은 06 표지에서 고른 이미지 비율을 따릅니다. 인쇄소·플랫폼 규격에 맞게 바꿔주세요.</p>
+</section>
+
+<section class="card">
+<div class="step"><span>STEP 05</span><h2>소개글 · 키워드</h2></div>
+<label>한 줄 소개<textarea id="pLogline" rows="2" placeholder="책을 한 문장으로 소개해주세요."></textarea></label>
+<label>짧은 소개 <small>(서점 목록·SNS용 2~3문장)</small><textarea id="pShort" rows="3"></textarea></label>
+<label>책 소개 <small>(서점 상세페이지용)</small><textarea id="pLong" rows="6"></textarea></label>
+<label>뒤표지 문구<textarea id="pBack" rows="5"></textarea></label>
+<label>검색 키워드 <small>(쉼표로 구분)</small><input id="pKeywords" placeholder="예: 그림책, 용서, 사랑, 감성 이야기"></label>
+</section>
+
+<section class="card">
+<div class="step"><span>STEP 06</span><h2>저작권 · AI 활용 고지</h2></div>
+<p class="help">AI로 만든 콘텐츠는 서점·출판 플랫폼에서 활용 여부를 밝히도록 요구하는 경우가 늘고 있어요. 실제 작업 방식에 맞게 골라주세요.</p>
+<label>저작권 표기<select id="pLicense"><option value="all">모든 권리 보유 (All rights reserved)</option><option value="by-nc-nd">CC BY-NC-ND 4.0 (저작자표시-비영리-변경금지)</option><option value="by-nc">CC BY-NC 4.0 (저작자표시-비영리)</option><option value="by">CC BY 4.0 (저작자표시)</option></select></label>
+<div class="grid">
+<label>이야기(글) 제작 방식<select id="pAiText"><option value="assist">AI의 도움을 받아 작가가 구성·편집</option><option value="self">작가가 직접 집필 (AI 미사용)</option></select></label>
+<label>이미지(그림) 제작 방식<select id="pAiImage"><option value="ai">AI 생성 이미지를 작가가 구성·편집</option><option value="mixed">AI 생성 이미지 + 작가의 직접 보정</option><option value="hand">작가가 직접 그린 그림 (AI 미사용)</option></select></label>
+</div>
+<label>사용한 AI 도구 <small>(선택)</small><input id="pAiTools" placeholder="예: ChatGPT, Canva Magic Media, Midjourney"></label>
+</section>
+
+<section class="card">
+<div class="step"><span>STEP 07</span><h2>작가의 말 <span class="auto-tag">선택</span></h2></div>
+<p class="help">그림책 맨 뒤나 뒷표지에 넣는 짧은 글이에요. 아래 질문을 떠올리며 한두 문장씩 적어보세요. 「초안 만들기」를 누르면 마음색 내용으로 뼈대를 만들어 드려요.</p>
+<ol class="bridge-steps" style="margin-bottom:10px">
+<li>왜 이 색(이야기)을 골랐나요?</li>
+<li>이야기를 만들면서 새롭게 알게 된 내 마음이 있나요?</li>
+<li>이 그림책을 읽을 사람에게 어떤 말을 건네고 싶나요?</li>
+</ol>
+<label style="margin-top:0">작가의 말<textarea id="pAuthorNote" rows="7" placeholder="예: 내 마음의 색은 분홍입니다. 그 색은 나에게 친구와 걷던 노을 진 길을 떠올리게 합니다."></textarea></label>
+<div class="actions" style="margin-top:12px">
+<button type="button" class="btn soft" id="authorDraft">초안 만들기</button>
+<button type="button" class="btn ghost" id="authorPolish">AI로 다듬기 요청문 복사</button>
+</div>
+</section>
+
+<button class="btn primary big" type="submit">출판 정보 만들기</button>
+</form>
+
+<section id="results" class="results hidden">
+<p class="eyebrow">RESULT</p>
+<h2>출판 정보가 정리되었습니다!</h2>
+<p class="help">입력한 내용이 바뀌면 아래 결과도 바로 갱신돼요. 빈칸으로 남은 항목은 (작가명)처럼 표시됩니다.</p>
+<h3 style="margin:18px 0 4px">★ 플랫폼별 등록 입력표</h3>
+<p class="help" style="margin-top:0">등록 화면을 열어 놓고, 위에서부터 항목 순서대로 복사해 붙여넣으세요.</p>
+<div id="outPlatforms" class="all-list"></div>
+<h3 style="margin:26px 0 4px">그 밖의 출판 자료</h3>
+<div class="result-grid">
+<article class="result"><h3>① 도서 정보 (서지 정보)</h3><div id="outBib" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outBib')">복사하기</button></article>
+<article class="result"><h3>② 판권면 문구</h3><div id="outColophon" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outColophon')">복사하기</button></article>
+<article class="result"><h3>③ 서점·플랫폼 등록용 소개글</h3><div id="outIntro" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outIntro')">복사하기</button></article>
+<article class="result"><h3>④ 뒤표지 문구</h3><div id="outBack" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outBack')">복사하기</button></article>
+<article class="result"><h3>⑤ 키워드 · 분류</h3><div id="outKeywords" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outKeywords')">복사하기</button></article>
+<article class="result">
+<h3>⑥ AI 활용 고지문</h3>
+<span class="lang-tag lang-kr">🇰🇷 한국어</span>
+<div id="outAiKR" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outAiKR')">복사하기</button>
+<span class="lang-tag lang-en">🇺🇸 English · 해외 플랫폼 등록용</span>
+<div id="outAiEN" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outAiEN')">Copy</button>
+</article>
+<article class="result"><h3>⑦ 작가의 말</h3><div id="outAuthor" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outAuthor')">복사하기</button></article>
+<article class="result"><h3>⑧ 캔바 편집 체크리스트</h3><div id="outCanva" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('outCanva')">복사하기</button></article>
+</div>
+
+<div class="note"><b>완성!</b><br>위 <b>플랫폼별 등록 입력표</b>를 등록 화면에 순서대로 복사해 넣으세요. ② 판권면 문구는 책 앞 또는 맨 뒤 페이지에, ④ 뒤표지 문구는 뒤표지에 쓰세요.<br><b>💡 참고</b> ISBN·가격·정산 방법은 각 플랫폼 등록 화면의 안내에 따라 그곳에서 정해요. 플랫폼 정책과 화면은 바뀔 수 있으니 등록 전에 최신 안내를 확인해주세요.</div>
+<div id="finishAnchor"></div>
+<div class="step-nav" id="cmStepNav"></div>
+</section>
+</main>
+
+<footer class="wrap">COLOR.M · Color · Design · AI</footer>
+
+<script src="../shared/colorm.js"></script>
+<script src="../shared/presets.js"></script>
+<script src="../shared/mind.js"></script>
+<script src="../shared/recommend.js"></script>
+<script src="../shared/finish.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+ColorM.renderHeader('cmHeader','publish');
+ColorM.applyDrops(ColorMPresets.publish);
+ColorMRecommend.mount('publish');
+ColorM.renderStepNav('cmStepNav','publish');
+
+const FIELD_IDS=['pTitle','pSubtitle','pAuthor','pIllustrator','pPlatforms','pAudience','pCategory','pLang','pPages','pTrim','pLogline','pShort','pLong','pBack','pKeywords','pLicense','pAiText','pAiImage','pAiTools','pAuthorNote'];
+const AUDIENCES=['유아 5~7세','초등 저학년','초등 고학년','청소년','전체 연령'];
+const AGE_TEXT={'유아 5~7세':'만 5~7세(유아)','초등 저학년':'만 7~9세(초등 저학년)','초등 고학년':'만 10~12세(초등 고학년)','청소년':'만 13~18세(청소년)','전체 연령':'전 연령'};
+const TRIMS=[
+  {ratio:'3:4',label:'세로형 3:4 (예: 210×280mm)'},
+  {ratio:'4:3',label:'가로형 4:3 (예: 280×210mm)'},
+  {ratio:'1:1',label:'정사각형 1:1 (예: 230×230mm)'},
+  {ratio:'16:9',label:'와이드 16:9 (예: 297×167mm)'},
+  {ratio:'9:16',label:'슬림 세로 9:16 (예: 158×280mm)'}
+];
+const LICENSE_TEXT={
+  'all':'All rights reserved. 이 책의 내용을 저작권자의 허락 없이 복제·전재하는 것을 금합니다.',
+  'by-nc-nd':'이 책은 크리에이티브 커먼즈 CC BY-NC-ND 4.0(저작자표시-비영리-변경금지) 라이선스로 공개됩니다.',
+  'by-nc':'이 책은 크리에이티브 커먼즈 CC BY-NC 4.0(저작자표시-비영리) 라이선스로 공개됩니다.',
+  'by':'이 책은 크리에이티브 커먼즈 CC BY 4.0(저작자표시) 라이선스로 공개됩니다.'
+};
+
+function keyOf(id){ const k=id.slice(1); return k.charAt(0).toLowerCase()+k.slice(1); }
+function getFields(){
+  const f={};
+  FIELD_IDS.forEach(id=>{ f[keyOf(id)] = $(id).value.trim(); });
+  return f;
+}
+function setFields(obj){
+  FIELD_IDS.forEach(id=>{
+    const k=keyOf(id);
+    if(obj[k]===undefined) return;
+    const el=$(id);
+    el.value=obj[k];
+    if(el.tagName==='SELECT' && el.value!==String(obj[k])) el.selectedIndex=0;
+  });
+}
+
+// 등록할 곳. 각 플랫폼의 입력 항목 이름은 화면이 바뀔 수 있어, 확인된 것만 구체적으로 안내합니다.
+const PLATFORMS=[
+  {key:'bookk', name:'부크크'},
+  {key:'purple', name:'교보문고 퍼플'},
+  {key:'upaper', name:'유페이퍼'},
+  {key:'kdp', name:'아마존 KDP'}
+];
+const ALL_PLATFORMS=PLATFORMS.map(p=>p.name).join(',');
+function selectedPlatforms(f){
+  const names=(f.platforms||'').split(',').map(s=>s.trim()).filter(Boolean);
+  return PLATFORMS.filter(p=>names.indexOf(p.name)>=0);
+}
+function drawPlatformChips(){
+  const names=($('pPlatforms').value||'').split(',').map(s=>s.trim());
+  $('platformChips').innerHTML=PLATFORMS.map(p=>'<button type="button" class="mind-chip'+(names.indexOf(p.name)>=0?' on':'')+'" data-pf="'+p.name+'">'+p.name+'</button>').join('');
+}
+$('platformChips').addEventListener('click', function(e){
+  const b=e.target.closest('[data-pf]'); if(!b) return;
+  const cur=($('pPlatforms').value||'').split(',').map(s=>s.trim()).filter(Boolean);
+  const i=cur.indexOf(b.dataset.pf);
+  if(i>=0) cur.splice(i,1); else cur.push(b.dataset.pf);
+  $('pPlatforms').value=cur.join(',');
+  drawPlatformChips();
+  $('pPlatforms').dispatchEvent(new Event('input',{bubbles:true}));
+});
+
+// 이전 단계(기획·스토리·캐릭터·표지) 데이터로 기본값을 만듭니다.
+function deriveDefaults(project){
+  const plan=project.plan||{}, story=project.story||{}, cover=project.cover||{}, ch=project.character||{};
+  const title=project.bookTitle||(cover.title&&cover.title!=='제목 미정'?cover.title:'')||(story.titles&&story.titles[0])||plan.topic||'';
+  const sceneCount=story.sceneCount||((project.storyboard||{}).scenes||[]).length||0;
+  const pages=sceneCount ? Math.min(48,Math.max(24,Math.ceil((sceneCount*2+6)/8)*8)) : 32;
+  const trim=(TRIMS.find(t=>t.ratio===cover.ratio)||TRIMS[0]).label;
+  const audience=AUDIENCES.indexOf(plan.audience)>=0 ? plan.audience : '초등 저학년';
+  const genre=plan.genre||'창작동화';
+  const age=AGE_TEXT[audience];
+  const summary=(story.summary||'').trim();
+  const sentences=summary ? summary.split(/(?<=[.!?])\s+/) : [];
+  const short=sentences.slice(0,2).join(' ') || [plan.problem,plan.goal].filter(Boolean).join(' ');
+  const message=plan.message||'';
+  const logline=plan.oneLine || [plan.hero,plan.goal].filter(Boolean).join(' — ');
+  const long=[summary||short, message?('이 책이 전하는 이야기: '+message):'', age+'에게 권하는 '+genre+' 그림책입니다.'].filter(Boolean).join('\n\n');
+  const back=[message?('“'+message+'”'):'', short, age+'에게 권합니다.'].filter(Boolean).join('\n\n');
+  const kw=[];
+  String(plan.topic||'').split(/[,·、]/).forEach(x=>kw.push(x.trim()));
+  kw.push(plan.genre, plan.mood, ch.name, '그림책', audience==='청소년'?'청소년 그림책':'어린이 그림책');
+  const keywords=kw.filter((x,i)=>x && kw.indexOf(x)===i).join(', ');
+  return {
+    title, subtitle:cover.subtitle||'', platforms:ALL_PLATFORMS,
+    audience, category:(audience==='청소년'?'청소년':'어린이')+' > 그림책 > '+genre,
+    lang:'한국어', pages:String(pages), trim,
+    logline, short, long, back, keywords,
+    license:'all', aiText:'assist', aiImage:'ai'
+  };
+}
+
+function aiNotices(f){
+  const usesText=f.aiText==='assist', usesImage=f.aiImage!=='hand';
+  if(!usesText && !usesImage){
+    return {
+      kr:'이 책의 글과 그림은 모두 작가가 직접 제작했으며, 생성형 AI를 사용하지 않았습니다.',
+      en:'The text and illustrations of this book were created entirely by the author. No generative AI was used.'
+    };
+  }
+  const kr=[], en=[];
+  kr.push(usesText ? '이야기 초안 작성에 생성형 AI의 도움을 받았으며, 기획·구성·편집은 작가가 직접 했습니다.' : '이야기는 작가가 직접 집필했습니다.');
+  en.push(usesText ? 'The story draft was written with the help of generative AI; the author planned, structured, and edited the story.' : 'The story was written by the author.');
+  if(f.aiImage==='ai'){
+    kr.push('삽화는 생성형 AI로 만든 이미지를 작가가 구성·편집했습니다.');
+    en.push('The illustrations are AI-generated images arranged and edited by the author.');
+  }else if(f.aiImage==='mixed'){
+    kr.push('삽화는 생성형 AI로 만든 이미지에 작가가 직접 보정을 더해 제작했습니다.');
+    en.push('The illustrations combine AI-generated images with the author’s own retouching.');
+  }else{
+    kr.push('삽화는 작가가 직접 그렸습니다.');
+    en.push('The illustrations were drawn by the author.');
+  }
+  return {
+    kr: kr.join(' ')+(f.aiTools?' 사용한 AI 도구: '+f.aiTools+'.':'')+' 모든 내용은 작가가 검수했습니다.',
+    en: en.join(' ')+(f.aiTools?' AI tools used: '+f.aiTools+'.':'')+' The author reviewed all content.'
+  };
+}
+
+function build(f){
+  const author=f.author||'(작가명)';
+  const illu=f.illustrator||f.author||'(작가명)';
+  const imageNote={ai:' (AI 생성 이미지 · 작가 구성·편집)',mixed:' (AI 생성 이미지 + 직접 보정)',hand:''}[f.aiImage]||'';
+  const titleFull='『'+(f.title||'제목 미정')+'』'+(f.subtitle?' - '+f.subtitle:'');
+  const age=AGE_TEXT[f.audience]||f.audience;
+  const year=String(new Date().getFullYear());
+  const ai=aiNotices(f);
+
+  const bib=[
+    '제목: 『'+(f.title||'제목 미정')+'』',
+    f.subtitle?('부제: '+f.subtitle):'',
+    '글: '+author,
+    '그림: '+illu+imageNote,
+    '쪽수: '+String(f.pages).replace(/\s*쪽$/,'')+'쪽',
+    '판형: '+f.trim,
+    '대상 독자: '+age,
+    '분류: '+f.category,
+    '언어: '+f.lang
+  ].filter(Boolean).join('\n');
+
+  const colophon=[
+    titleFull,
+    '',
+    '글  '+author,
+    '그림  '+illu,
+    '',
+    'ⓒ '+year+' '+author+'. '+(LICENSE_TEXT[f.license]||(f.license?('저작권 표기: '+f.license):LICENSE_TEXT.all)),
+    '',
+    ai.kr
+  ].join('\n');
+
+  const intro=[
+    '[한 줄 소개]', f.logline||'(한 줄 소개를 입력해주세요)', '',
+    '[짧은 소개]', f.short||'(짧은 소개를 입력해주세요)', '',
+    '[책 소개]', f.long||'(책 소개를 입력해주세요)'
+  ].join('\n');
+
+  const back=f.back||'(뒤표지 문구를 입력해주세요)';
+  const keywords=[
+    '키워드: '+(f.keywords||'(키워드를 입력해주세요)'),
+    '분류: '+f.category,
+    '대상 독자: '+age,
+    '언어: '+f.lang
+  ].join('\n');
+
+  const canva = [
+    '□ 캔바에서 그림책 판형(정사각형 또는 가로형)을 정했어요',
+    '□ 장면마다 그림을 페이지에 넣었어요',
+    '□ 장면마다 본문 글을 텍스트 상자로 넣었어요',
+    '□ 글이 그림의 중요한 부분을 가리지 않아요',
+    '□ 글꼴·글자 크기·색을 모든 페이지에서 맞췄어요',
+    '□ 표지에 제목과 지은이를 넣었어요',
+    '□ 작가의 말과 판권면 페이지를 넣었어요'
+  ].join('\n');
+  return {bib, colophon, intro, back, keywords, aiKR:ai.kr, aiEN:ai.en, author:f.authorNote||'', canva, platforms:buildPlatforms(f, ai)};
+}
+
+// ---------- 플랫폼별 등록 입력표 ----------
+const READING_AGE={'유아 5~7세':'5 – 7','초등 저학년':'7 – 9','초등 고학년':'10 – 12','청소년':'13 – 18','전체 연령':'(전 연령이면 0 – 18 범위로 넓게)'};
+function kwList(f){ return (f.keywords||'').split(/[,，、]/).map(s=>s.trim()).filter(Boolean); }
+function aiAnswerKDP(f){
+  const text=f.aiText==='assist' ? '예 — AI가 이야기 초안을 만들었다면 "AI-generated", 내가 쓴 글을 AI로 다듬기만 했다면 "AI-assisted"' : '아니오 (직접 집필)';
+  const img=f.aiImage==='hand' ? '아니오 (직접 그린 그림)' : '예 — AI로 만든 이미지는 "AI-generated"로 답해요 (작가가 구성·보정했어도 마찬가지)';
+  return {text, img};
+}
+function buildPlatforms(f, ai){
+  const title=f.title||'(제목)', sub=f.subtitle||'', author=f.author||'(작가명)', illu=f.illustrator||f.author||'(작가명)';
+  const sameAuthor=!f.illustrator || f.illustrator===f.author;
+  const age=AGE_TEXT[f.audience]||f.audience;
+  const kws=kwList(f);
+  const pages=String(f.pages).replace(/\s*쪽$/,'')+'쪽';
+  const commonKR=function(name, tips){
+    const L=['['+name+' 등록 입력표]','※ 입력 화면의 항목 이름은 조금 다를 수 있어요. 비슷한 항목에 그대로 복사해 넣으세요.','',
+      '제목: '+title,
+      '부제: '+(sub||'(없음)'),
+      '저자(글): '+author,
+      '그림 작가: '+(sameAuthor?'(글 작가와 같음)':illu),
+      '카테고리: '+(f.category||'(분류)'),
+      '키워드: '+(kws.join(', ')||'(키워드)'),
+      '대상 독자: '+age,
+      '언어: '+f.lang,
+      '쪽수: '+pages+' / 판형: '+f.trim,
+      '',
+      '[한 줄 소개]', f.logline||'(한 줄 소개)','',
+      '[짧은 소개]', f.short||'(짧은 소개)','',
+      '[책 소개]', f.long||'(책 소개)','',
+      '[저작권 표기]', LICENSE_TEXT[f.license]||LICENSE_TEXT.all,'',
+      '[AI 활용 고지]', ai.kr];
+    if(tips && tips.length){ L.push('','[알아두면 좋아요]'); tips.forEach(t=>L.push('- '+t)); }
+    L.push('','※ ISBN·가격·정산 정보는 플랫폼 화면의 안내에 따라 그곳에서 정해요. 플랫폼 정책은 바뀔 수 있으니 등록 전에 최신 안내를 확인하세요.');
+    return L.join('\n');
+  };
+  const out={};
+  out.bookk=commonKR('부크크',['판형과 쪽수는 부크크가 지원하는 규격 안에서 골라주세요.','표지와 내지 파일을 따로 준비하는 방식이 일반적이에요. 판형에 맞는 표지 크기는 부크크 안내를 확인하세요.']);
+  out.purple=commonKR('교보문고 퍼플',['표지 파일과 내지 파일을 준비하세요. (교보문고 퍼플 안내 기준)','출판사 등록이나 사업자 등록 없이 개인이 출간할 수 있다고 안내돼요. 자세한 조건은 퍼플 공지를 확인하세요.']);
+  const tl=title.length;
+  out.upaper=commonKR('유페이퍼',['제목은 40자를 넘으면 안 돼요. 길면 제목과 부제로 나눠 넣으세요. (지금 제목 '+tl+'자'+(tl>40?' — 40자를 넘었어요!':' — 괜찮아요')+')','전자책은 원고(Word)나 PDF 파일로 올리는 방식이에요.']);
+  const ageKDP=READING_AGE[f.audience]||'';
+  const a=aiAnswerKDP(f);
+  const kdp=['[아마존 KDP 등록 입력표]','※ KDP 화면은 영어예요. 아래를 항목 순서대로 복사해 넣으세요.','',
+    'Language: '+({'한국어':'Korean','English':'English','한국어·English':'Korean (또는 English)'}[f.lang]||f.lang),
+    'Book Title: '+title,
+    'Subtitle: '+(sub||'(없으면 비워두세요)'),
+    'Series: (시리즈가 아니면 비워두세요)',
+    'Author: '+author,
+    'Contributor: '+(sameAuthor?'(글 작가와 같으면 따로 추가하지 않아도 돼요)':illu+' — Illustrator'),
+    '',
+    '[Description — 책 소개]', f.long||f.short||'(책 소개)','',
+    'Publishing Rights: 내가 저작권자이고 출판 권리를 가지고 있어요 (I own the copyright and I hold necessary publishing rights).','',
+    'Keywords (최대 7개, 한 칸에 하나씩):'].concat(kws.slice(0,7).map((k,i)=>'  '+(i+1)+'. '+k)).concat([
+    '  ※ 키워드는 독자가 검색할 만한 짧은 말로, 7개 이내로 넣으세요.','',
+    'Categories: 어린이 그림책 계열(Children\'s Books › Picture Books)에서 가장 가까운 것을 고르세요. (처음엔 최대 2개까지 고를 수 있어요)',
+    'Reading age: '+ageKDP+' 세 (어린이 책은 이 값이 있어야 어린이 카테고리에 올라가요)','',
+    '[AI-generated content 질문]',
+    '글(Text) 만든 방식: '+a.text,
+    '이미지(Images) 만든 방식: '+a.img,
+    '사용한 AI 도구: '+(f.aiTools||'(도구 이름)'),
+    '※ KDP는 "AI가 만든 것"과 "AI의 도움을 받은 것"을 구분해서 물어요. 정확한 기준은 KDP 도움말을 확인하세요.','',
+    '[AI 활용 고지문 · English]', ai.en,'',
+    '[인쇄책(Paperback)이라면]',
+    '쪽수: '+pages+' / 판형(Trim size): '+f.trim,
+    '내지 색상은 컬러(Color)로 골라야 그림이 컬러로 인쇄돼요.','',
+    '※ ISBN·가격·로열티는 KDP 화면에서 정해요. 정책은 바뀔 수 있으니 등록 전에 최신 안내를 확인하세요.']);
+  out.kdp=kdp.join('\n');
+  return out;
+}
+
+function prevSummary(project){
+  const st=ColorM.stepStatus(project);
+  const mark=(ok,label)=>(ok?'✓ ':'· ')+label;
+  const lines=[
+    [mark(st.plan,'01 기획'),mark(st.story,'02 스토리'),mark(st.character,'04 캐릭터'),mark(st.cover,'06 표지')].join('   ')
+  ];
+  const d=deriveDefaults(project);
+  if(d.title) lines.push('', '제목: '+d.title);
+  if(!st.plan && !st.story && !st.cover) lines.push('', '아직 불러온 이전 단계 정보가 없습니다. 01~06 단계를 먼저 진행하면 이 화면이 자동으로 채워져요. 지금은 직접 입력해도 됩니다.');
+  return lines.join('\n');
+}
+
+function renderPlatforms(f, o){
+  const sel=selectedPlatforms(f);
+  const box=$('outPlatforms');
+  if(!sel.length){ box.innerHTML='<p class="help">위 「어디에 등록하나요?」에서 등록할 곳을 고르면 입력표가 나와요.</p>'; return; }
+  box.innerHTML=sel.map(p=>'<article class="result"><h3>'+p.name+'</h3><div id="outPf_'+p.key+'" class="box"></div>'+
+    '<button class="copy" type="button" onclick="ColorM.copyBox(\'outPf_'+p.key+'\')">복사하기</button></article>').join('');
+  sel.forEach(p=>{ $('outPf_'+p.key).textContent=o.platforms[p.key]; });
+}
+
+let lastBuilt=null;
+function render(save){
+  const f=getFields();
+  if(!f.title){ $('results').classList.add('hidden'); return; }
+  const o=build(f);
+  $('outBib').textContent=o.bib;
+  $('outColophon').textContent=o.colophon;
+  $('outIntro').textContent=o.intro;
+  $('outBack').textContent=o.back;
+  $('outKeywords').textContent=o.keywords;
+  $('outAiKR').textContent=o.aiKR;
+  $('outAiEN').textContent=o.aiEN;
+  $('outAuthor').textContent=o.author||'(작가의 말을 쓰면 여기에 나와요)';
+  $('outCanva').textContent=o.canva;
+  renderPlatforms(f, o);
+  $('results').classList.remove('hidden');
+  lastBuilt=o;
+  if(save) ColorM.saveStep('publish', {fields:f, outputs:o});
+}
+
+function init(){
+  const project=ColorM.getProject();
+  const defaults=deriveDefaults(project);
+  const saved=project.publish && project.publish.fields;
+  setFields(saved ? Object.assign({}, defaults, saved) : defaults);
+  if(!$('pPlatforms').value && !(saved && saved.platforms!==undefined)) $('pPlatforms').value=ALL_PLATFORMS;
+  drawPlatformChips();
+  $('prevPreview').textContent=prevSummary(project);
+  render(false);
+}
+
+function refill(){
+  const project=ColorM.getProject();
+  setFields(deriveDefaults(project));
+  drawPlatformChips();
+  $('prevPreview').textContent=prevSummary(project);
+  render(true);
+  ColorM.toast('이전 단계 정보로 다시 채웠습니다.');
+}
+
+
+
+let liveTimer=null;
+$('publishForm').addEventListener('input', function(){ clearTimeout(liveTimer); liveTimer=setTimeout(function(){ render(true); },300); });
+$('publishForm').addEventListener('change', function(){ clearTimeout(liveTimer); liveTimer=setTimeout(function(){ render(true); },300); });
+$('publishForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!$('pTitle').value.trim()){ alert('제목을 입력해주세요.'); $('pTitle').focus(); return; }
+  render(true);
+  setTimeout(()=>$('results').scrollIntoView({behavior:'smooth',block:'start'}),50);
+});
+
+function buildDownloadText(){
+  const pf=selectedPlatforms(getFields()).map(p=>($('outPf_'+p.key)||{textContent:''}).textContent.trim());
+  return ['COLOR.M 마음색 그림책 메이커 · 07 출판 정보','================================','',
+    pf.length ? '[플랫폼별 등록 입력표]\n\n'+pf.join('\n\n--------------------\n\n')+'\n' : '',
+    '[도서 정보]', $('outBib').textContent.trim(),'',
+    '[판권면 문구]', $('outColophon').textContent.trim(),'',
+    '[서점·플랫폼 등록용 소개글]', $('outIntro').textContent.trim(),'',
+    '[뒤표지 문구]', $('outBack').textContent.trim(),'',
+    '[키워드·분류]', $('outKeywords').textContent.trim(),'',
+    '[AI 활용 고지문 · 한국어]', $('outAiKR').textContent.trim(),'',
+    '[AI 활용 고지문 · English]', $('outAiEN').textContent.trim(),'',
+    '[작가의 말]', $('outAuthor').textContent.trim(),'',
+    '[캔바 편집 체크리스트]', $('outCanva').textContent.trim()
+  ].join('\n');
+}
+function downloadTXT(){
+  if($('results').classList.contains('hidden')){ alert('먼저 제목을 입력해 출판 정보를 만들어주세요.'); return; }
+  const project=ColorM.getProject();
+  ColorM.downloadTXT('COLOR.M_'+project.projectName+'_출판정보.txt', buildDownloadText());
+}
+
+// ---- 작가의 말: 초안 / AI 다듬기 요청문 ----
+function draftAuthorNote(){
+  const cur = $('pAuthorNote').value.trim();
+  if(cur && !confirm('지금 쓴 작가의 말을 지우고 초안으로 바꿀까요?')) return;
+  const m = (typeof ColorMMind !== 'undefined') ? ColorMMind.get() : null;
+  const author = $('pAuthor').value.trim() || '지은이';
+  let text;
+  if(m && m.color){
+    const mem = (m.memory||'').trim().split(/[.!?\n]/)[0].trim().slice(0,40) || '○○';
+    const need = m.needs.concat([m.needCustom.trim()]).filter(Boolean).join(', ') || '○○';
+    text = '내 마음의 색은 ' + (m.colorLabel || m.colorName) + '입니다.\n' +
+      '그 색은 나에게 ' + mem + ColorM.josa(mem,['을','를']) + ' 떠올리게 합니다.\n' +
+      '지금 나에게 필요한 것은 ' + need + '입니다.\n\n' +
+      '(이야기를 만들면서 알게 된 내 마음을 적어 보세요.)\n\n' +
+      '(읽는 사람에게 건네고 싶은 말을 적어 보세요.)\n\n— ' + author;
+  }else{
+    const msg = ((ColorM.getProject().plan||{}).message||'').trim() || '○○○';
+    text = '이 그림책은 「' + msg + '」라는 마음을 담아 만들었습니다.\n\n' +
+      '(이야기를 만들면서 새롭게 알게 된 것을 적어 보세요.)\n\n' +
+      '(읽는 사람에게 건네고 싶은 말을 적어 보세요.)\n\n— ' + author;
+  }
+  $('pAuthorNote').value = text;
+  $('pAuthorNote').dispatchEvent(new Event('input', {bubbles:true}));
+}
+$('authorDraft').addEventListener('click', draftAuthorNote);
+$('authorPolish').addEventListener('click', function(){
+  const t = $('pAuthorNote').value.trim();
+  if(!t){ alert('먼저 작가의 말을 적거나 「초안 만들기」를 눌러주세요.'); return; }
+  ColorM.copyText("아래는 내가 쓴 그림책 '작가의 말'이야. 내 표현과 내용은 그대로 살리고, 맞춤법과 어색한 문장만 자연스럽게 다듬어줘. 새로운 내용은 더하지 마.\n\n" + t);
+});
+
+init();
+
+ColorMFinish.mount($('finishAnchor'), {
+  pdfLabel:'출판 정보 PDF 저장',
+  pdf:function(){ ColorM.saveAsPDF('results','출판정보'); },
+  txt:downloadTXT,
+  copyAll:function(){ return buildDownloadText(); }
+});
+</script>
+</body>
+</html>

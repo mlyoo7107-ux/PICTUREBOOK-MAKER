@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마음색 그림책 메이커 — COLOR.M</title>
+<link rel="icon" type="image/svg+xml" href="shared/assets/favicon.svg">
+<link rel="stylesheet" href="shared/colorm.css">
+<style>
+.makers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0 10px}
+.maker-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 2px 10px rgba(23,21,18,.06);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:transform .15s ease,border-color .15s ease}
+.maker-card:hover{transform:translateY(-3px);border-color:var(--ab)}
+.maker-card .num{display:inline-block;align-self:flex-start;background:var(--tint);border:1px solid var(--ab);color:var(--m);font-weight:800;font-size:11px;letter-spacing:.4px;padding:4px 12px;border-radius:20px}
+.maker-card h3{margin:4px 0 0;font-size:19px}
+.maker-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.maker-card .badge{position:absolute;top:18px;right:18px;background:#e9f9f0;color:#22a55e;font-size:11px;font-weight:900;padding:5px 10px;border-radius:999px;display:none}
+.maker-card.is-done .badge{display:inline-block}
+.project-status{margin-top:18px}
+.summary-link{display:inline-flex;align-items:center;gap:6px}
+.how{margin-top:0}
+.how-title{margin:0 0 6px;font-size:20px}
+.how-lead{margin:0 0 14px;font-size:15px;line-height:1.7}
+.how-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.how-steps li{position:relative;display:flex;flex-direction:column;gap:4px;padding:14px 14px 14px 52px;border:1px solid var(--line);border-radius:14px;background:var(--tint)}
+.how-steps b{font-size:15px}
+.how-steps small{font-size:12.5px;line-height:1.55;color:var(--muted);font-weight:600}
+.how-n{position:absolute;left:14px;top:14px;width:28px;height:28px;border-radius:50%;background:var(--m);color:#fff;font-weight:900;display:grid;place-items:center}
+.how-start{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.how-start .btn{text-decoration:none}
+.how-start .help{margin:0}
+.group-title{display:flex;align-items:center;gap:10px;margin:26px 0 0;font-size:17px}
+.group-title span{width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--m);display:grid;place-items:center;font-size:14px;font-weight:900}
+.group-title+.makers{margin-top:10px}
+</style>
+</head>
+<body>
+<div id="cmHeader"></div>
+<header class="hero">
+<h1><b>이야기를 그림책으로!</b></h1>
+<p class="sub">내가 고른 마음색과 이야기를 따라가면, <b>그림책에 필요한 요청문과 출판 정보</b>가 차례로 만들어져요.</p>
+</header>
+<main class="wrap">
+
+<section class="card how">
+<h2 class="how-title">이 메이커는 이렇게 써요</h2>
+<p class="how-lead"><b>그림을 대신 그려주지는 않아요.</b> 단계마다 만들어 주는 <b>요청문(프롬프트)</b>을 <b>ChatGPT·캔바 같은 AI</b>에 복사해서 붙여넣으면, 그 AI가 이야기와 그림을 만들어 줘요.</p>
+<ol class="how-steps">
+<li><span class="how-n">1</span><b>이야기 정하기</b><small>01~03 · 무슨 이야기를 쓸지 정하고, 장면마다 글과 대화를 정리해요.</small></li>
+<li><span class="how-n">2</span><b>그림 만들기</b><small>04~06 · 주인공·장면·표지를 그릴 요청문을 AI에 넣어요. 캔바는 전체를 한 번에 넣을 수 있어요.</small></li>
+<li><span class="how-n">3</span><b>책으로 내기</b><small>07 · 부크크·교보문고·유페이퍼·아마존 등에 등록할 정보를 정리해요.</small></li>
+</ol>
+<div class="how-start">
+<a class="btn primary big" id="startBtn" href="01-plan/index.html">✨ 시작하기</a>
+<span class="help" id="startHint">처음이라면 01부터 차례로 따라가세요. 중간에 멈춰도 자동으로 저장돼요.</span>
+</div>
+</section>
+
+<section class="sample">
+<div><b>프로젝트명</b><input class="hub-name" id="hubProjectName" type="text" placeholder="나의 AI 그림책 프로젝트" aria-label="프로젝트명"></div>
+<div class="actions">
+<button class="btn ghost" type="button" onclick="resetHubProject()">처음부터</button>
+<a class="btn primary summary-link" href="summary/index.html">전체 결과 한눈에 보기 →</a>
+</div>
+</section>
+
+<h2 class="group-title"><span>1</span>이야기 정하기</h2>
+<nav class="makers">
+<a class="maker-card" data-key="plan" href="01-plan/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">01</span>
+<h3>기획</h3>
+<p>마음색을 고르고, 주제·주인공·문제·전하고 싶은 말을 정해요.</p>
+</a>
+<a class="maker-card" data-key="story" href="02-story/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">02</span>
+<h3>이야기</h3>
+<p>기획을 바탕으로 이야기의 줄거리를 만들어요.</p>
+</a>
+<a class="maker-card" data-key="storyboard" href="03-storyboard/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">03</span>
+<h3>스토리보드</h3>
+<p>장면마다 등장인물·내용·대화·그림 구성을 정리해요.</p>
+</a>
+</nav>
+
+<h2 class="group-title"><span>2</span>그림 만들기</h2>
+<nav class="makers">
+<a class="maker-card" data-key="character" href="04-character/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">04</span>
+<h3>캐릭터</h3>
+<p>주인공의 모습을 정하고, 그림을 그릴 AI 요청문을 만들어요.</p>
+</a>
+<a class="maker-card" data-key="scene" href="05-scene/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">05</span>
+<h3>장면</h3>
+<p>장면마다 그릴 그림의 요청문을 만들어요. (캔바는 전체를 한 번에)</p>
+</a>
+<a class="maker-card" data-key="cover" href="06-cover/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">06</span>
+<h3>표지</h3>
+<p>책 제목을 정하고, 표지 그림의 요청문을 만들어요.</p>
+</a>
+</nav>
+
+<h2 class="group-title"><span>3</span>책으로 내기</h2>
+<nav class="makers">
+<a class="maker-card" data-key="publish" href="07-publish/index.html">
+<span class="badge">완료 ✓</span>
+<span class="num">07</span>
+<h3>출판 정보</h3>
+<p>서점·출판 플랫폼에 등록할 정보(소개글·키워드·AI 활용 고지 등)를 정리해요.</p>
+</a>
+</nav>
+
+<p class="note project-status"><b>💾 저장 안내</b> 입력한 내용은 서버로 보내지 않고 <b>이 브라우저에만 자동 저장</b>돼요. 다른 기기에서 이어서 하려면 위쪽 <b>저장</b>으로 작업파일(.json)을 내려받아 <b>불러오기</b>로 열어요. 학교·도서관 같은 공용 컴퓨터에서는 마친 뒤 <b>「처음부터」</b>로 지워주세요.</p>
+</main>
+
+<footer>COLOR.M · Color · Design · AI</footer>
+
+<script src="shared/colorm.js"></script>
+<script>
+ColorM.renderHeader('cmHeader', null, {base:'', tabs:false, projectBar:false});
+function refreshHubProjectName(){
+  const p = ColorM.getProject();
+  document.getElementById('hubProjectName').value = p.projectName || ColorM.DEFAULT_PROJECT_NAME;
+}
+function refreshBadges(){
+  const status = ColorM.stepStatus();
+  const cards = [].slice.call(document.querySelectorAll('.maker-card[data-key]'));
+  cards.forEach(function(card){
+    card.classList.toggle('is-done', !!status[card.dataset.key]);
+  });
+  // 시작하기 버튼: 아직 안 한 첫 단계로 이어서 갑니다.
+  const next = cards.find(function(c){ return !status[c.dataset.key]; });
+  const btn = document.getElementById('startBtn'), hint = document.getElementById('startHint');
+  const done = cards.filter(function(c){ return status[c.dataset.key]; }).length;
+  if(!done){
+    btn.textContent = '✨ 시작하기'; btn.href = '01-plan/index.html';
+    hint.textContent = '처음이라면 01부터 차례로 따라가세요. 중간에 멈춰도 자동으로 저장돼요.';
+  }else if(next){
+    btn.textContent = '이어서 하기 → ' + next.querySelector('.num').textContent + ' ' + next.querySelector('h3').textContent; btn.href = next.getAttribute('href');
+    hint.textContent = '지금까지 ' + done + '단계를 마쳤어요. 이어서 해볼까요?';
+  }else{
+    btn.textContent = '전체 결과 보기 →'; btn.href = 'summary/index.html';
+    hint.textContent = '모든 단계를 마쳤어요! 결과를 모아 보고 저장해요.';
+  }
+}
+function resetHubProject(){
+  if(!confirm('현재 저장된 프로젝트(기획·스토리·스토리보드·캐릭터·장면)가 모두 삭제됩니다. 계속할까요?')) return;
+  ColorM.clearAll();
+  refreshHubProjectName();
+  refreshBadges();
+  ColorM.toast('프로젝트가 초기화되었습니다.');
+}
+document.getElementById('hubProjectName').addEventListener('change', function(){ ColorM.saveProjectName(this.value); refreshHubProjectName(); });
+refreshHubProjectName();
+refreshBadges();
+</script>
+</body>
+</html>
