@@ -127,8 +127,25 @@ section.lp+section.lp{border-top:1px solid var(--line)}
 .note{margin-top:20px;font-size:13.5px;color:var(--ink-3);background:#fff;border:1px dashed #ffbfa3;border-radius:12px;padding:14px 16px;line-height:1.7}
 
 /* 시작하기 */
-.cta-band{text-align:center;background:linear-gradient(160deg,#ffeadf,#fff0f5)}
-.cta-band p{color:var(--ink-2);margin:0 0 20px}
+.pricing{text-align:center;background:linear-gradient(160deg,#ffeadf,#fff0f5)}
+.price-card{max-width:440px;margin:24px auto 0;background:#fff;border:2px solid var(--brand);border-radius:22px;padding:28px 26px;text-align:left;box-shadow:var(--shadow)}
+.price-card .badge2{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:var(--brand);border-radius:999px;padding:3px 10px}
+.price-card .promo{display:inline-block;margin-left:4px;font-size:12px;font-weight:800;color:#b0306a;background:#fde7f1;border-radius:999px;padding:3px 10px}
+.price-card .name{font-size:22px;font-weight:800;margin:10px 0 2px}
+.price-card .tagline{color:var(--ink-2);margin:0 0 14px}
+.price-card .amount{font-size:42px;font-weight:900;letter-spacing:-.02em}
+.price-card .amount small{font-size:16px;font-weight:600;color:var(--ink-3)}
+.price-card .regular{margin-top:2px;font-size:14px;color:var(--ink-3)}
+.price-card .regular em{font-style:normal;font-weight:800;color:#d6336c}
+.price-card .once{color:var(--brand-d);font-weight:700;margin:2px 0 16px}
+.price-card ul{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:8px}
+.price-card li::before{content:"✓  ";color:var(--brand);font-weight:800}
+.price-card li.x{color:var(--ink-3)}
+.price-card li.x::before{content:"✕  ";color:var(--ink-3)}
+.price-card .soon{width:100%;justify-content:center;opacity:.6;cursor:not-allowed}
+.free-cta{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.free-cta small{color:var(--ink-3)}
+.pricing .note{max-width:520px;margin:20px auto 0;text-align:left}
 .trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:20px;font-size:14px;color:var(--ink-2);font-weight:600}
 
 /* FAQ */
@@ -246,6 +263,7 @@ section.lp+section.lp{border-top:1px solid var(--line)}
     <div class="edu-contact">
       <p>🏷️ 학교·학원·기관의 단체·수업 이용 또는 교육 문의는 이메일로 보내 주세요.</p>
       <p>COLOR.M이 직접 진행하는 그림책 만들기 강의·워크숍도 문의하실 수 있어요.</p>
+      <p>학급·기관 1년 이용권은 1학급 연 79,000원부터 협의해요.</p>
       <div class="mail-row">
         <a class="mail-addr" href="mailto:mlyoo71@naver.com?subject=%5BCOLOR.M%20%EA%B7%B8%EB%A6%BC%EC%B1%85%20%EB%A9%94%EC%9D%B4%EC%BB%A4%5D%20%EB%8B%A8%EC%B2%B4%C2%B7%EC%88%98%EC%97%85%20%EC%9D%B4%EC%9A%A9%20%2F%20%EA%B5%90%EC%9C%A1%20%EB%AC%B8%EC%9D%98">✉️ mlyoo71@naver.com</a>
         <button type="button" class="btn small" id="copyMail">주소 복사</button>
@@ -358,15 +376,37 @@ section.lp+section.lp{border-top:1px solid var(--line)}
   </div>
 </section>
 
-<!-- ⑧ 시작하기 -->
-<section class="lp cta-band">
+<!-- ⑧ 가격 -->
+<section class="lp pricing">
   <div class="lp-wrap">
-    <h2>내 마음의 색으로, 첫 장면부터</h2>
-    <p>회원가입이나 카드 등록 없이 바로 시작해요.</p>
-    <a class="btn primary lg" href="index.html">🎁 지금 무료로 써 보기 →</a>
-    <div class="trust">
-      <span>🔓 회원가입 없이</span><span>💾 입력 내용은 이 브라우저에만 저장</span><span>💻 PC · 📱 폰 모두 사용</span>
+    <h2>한 번 결제로, 평생 이용</h2>
+    <p class="lead">지금은 무료 테스트 기간이에요. 마음껏 써 보시고 의견을 들려주세요.</p>
+    <div class="price-card">
+      <span class="badge2">BASIC</span> <span class="promo">🎉 런칭 이벤트 · 12월 31일까지</span>
+      <div class="name">마음색 그림책 메이커</div>
+      <p class="tagline">내 마음의 색에서 출발해 그림책 한 권을 준비하는 가장 쉬운 방법</p>
+      <!-- 2026-12-31까지 런칭가 14,900원 — 2027-01-01부터 정가 19,900원으로 변경할 것 (결제 기능을 열 때 결제 금액도 함께) -->
+      <div class="amount">14,900<small>원</small></div>
+      <div class="regular"><em>런칭가</em> · 2027년 1월 1일부터 정가 19,900원</div>
+      <p class="once">한 번 결제로, 평생 이용</p>
+      <ul>
+        <li>마음색 기획부터 출판 정보까지 7단계 무제한</li>
+        <li>대표 색 3가지 · 장면별 색 흐름</li>
+        <li>ChatGPT 연결 · 캔바에 전체 스토리보드 한 번에</li>
+        <li>부크크·교보문고 퍼플·유페이퍼·아마존 KDP 등록 입력표</li>
+        <li>TXT · PDF · 작업파일 저장·불러오기</li>
+        <li class="x">AI 그림·글 생성 기능 제외</li>
+      </ul>
+      <button type="button" class="btn soon" disabled>결제 준비 중이에요</button>
     </div>
+    <div class="free-cta">
+      <a class="btn primary lg" href="index.html">🎁 지금 무료로 써 보기 →</a>
+      <small>회원가입·카드 등록 없이 바로 시작해요</small>
+    </div>
+    <div class="trust">
+      <span>∞ 한 번 결제로 평생 이용</span><span>🚫 추가 이용료 없음</span><span>💻 PC · 📱 폰 모두 사용</span>
+    </div>
+    <p class="note">'평생 이용'은 서비스가 운영되는 동안 계속 이용할 수 있다는 뜻이에요. 서비스를 종료하거나 크게 바꿀 때는 미리 알리고, 작업 내용을 파일로 내려받을 수 있게 안내해요.</p>
   </div>
 </section>
 
@@ -374,6 +414,10 @@ section.lp+section.lp{border-top:1px solid var(--line)}
 <section class="lp faq">
   <div class="lp-wrap">
     <h2>자주 묻는 질문</h2>
+    <details>
+      <summary>가격은 얼마이고, '평생 이용'은 무슨 뜻인가요?</summary>
+      <p>한 번 결제하면 추가 이용료 없이 계속 쓸 수 있어요. 런칭 이벤트 가격은 14,900원(12월 31일까지)이고, 2027년 1월 1일부터 정가 19,900원이에요. '평생'은 서비스가 운영되는 동안이라는 뜻이며, 서비스를 종료하거나 크게 바꿀 때는 미리 알리고 작업파일을 내려받을 수 있게 안내해요. 지금은 결제 기능을 준비 중이라 무료로 써 보실 수 있어요. 학급·기관용 1년 이용권은 1학급 연 79,000원부터 협의해요.</p>
+    </details>
     <details>
       <summary>그림도 직접 만들어 주나요?</summary>
       <p>아니요. 그림책을 기획하고, ChatGPT·캔바 같은 AI 도구에 붙여넣을 요청문(프롬프트)을 만들어 드려요. 요청문을 붙여넣으면 그 도구에서 이야기와 그림이 만들어져요.</p>
