@@ -17,6 +17,28 @@ const ColorM = (function () {
   const DEFAULT_PROJECT_NAME = '나의 AI 그림책 프로젝트';
   const GALLERY_URL = 'https://mlyoo7107-ux.github.io/PRODUCT-DESIGN-MAKER/gallery/index.html?product=PICTURE_BOOK_MAKER';
 
+  /* ---------- 결제 · 무료 체험 (프로젝트 1개는 끝까지 무료, 2번째 프로젝트부터 결제) ---------- */
+  const PAYMENT_STATUS_API_URL = 'https://colorm-pdm-payment.milan71.workers.dev/';
+  const LANDING_URL = 'https://mlyoo7107-ux.github.io/PICTUREBOOK-MAKER/landing.html';
+  function isPaid() { try { return localStorage.getItem('cmPbmPaid') === '1'; } catch (e) { return false; } }
+  function hasUsedFreeProject() { try { return localStorage.getItem('cmPbmFreeUsed') === '1'; } catch (e) { return false; } }
+  function markFreeProjectUsed() { if (isPaid()) return; try { localStorage.setItem('cmPbmFreeUsed', '1'); } catch (e) {} }
+  // 다른 기기(폰 등)에서 쓰기 위한 개인 링크: ?order=<주문번호> — 결제 성공 화면에서 자동으로 만들어줘요.
+  (function applyOrderUnlockParam() {
+    try {
+      const q = new URLSearchParams(location.search);
+      const orderId = q.get('order');
+      if (!orderId) return;
+      fetch(PAYMENT_STATUS_API_URL + '?orderId=' + encodeURIComponent(orderId))
+        .then((r) => r.json()).then((data) => {
+          if (data && data.paid && data.plan === 'pbm') localStorage.setItem('cmPbmPaid', '1');
+        }).catch(() => {}).finally(() => {
+          const url = new URL(location.href); url.searchParams.delete('order');
+          history.replaceState(null, '', url.toString());
+        });
+    } catch (e) {}
+  })();
+
   // 5개 메이커 공통 순서 정의 — key는 project 객체의 필드명과 동일하게 맞춥니다.
   const STEPS = [
     { key: 'plan', label: '01 PLAN', num: '01', name: '기획', path: '01-plan' },
@@ -79,6 +101,7 @@ const ColorM = (function () {
     const project = getProject();
     project[stepKey] = data;
     storage.set(project);
+    markFreeProjectUsed();
     return project;
   }
 
@@ -245,6 +268,11 @@ const ColorM = (function () {
   }
 
   function newProject() {
+    if (hasUsedFreeProject() && !isPaid()) {
+      alert('무료 체험(프로젝트 1개)을 이미 사용하셨어요. 새 프로젝트를 시작하려면 구매가 필요해요 — 1회 결제로 프로젝트 제한 없이 평생 이용할 수 있어요.');
+      location.href = LANDING_URL;
+      return;
+    }
     if (!confirm('현재 작업 중인 프로젝트가 모두 삭제됩니다. 먼저 「저장」으로 작업파일을 받아두면 나중에 불러올 수 있어요.\n새 프로젝트를 시작할까요?')) return;
     clearAll();
     location.reload();
@@ -756,6 +784,8 @@ const ColorM = (function () {
     copyBox: copyBox,
     saveAsPDF: saveAsPDF,
     downloadTXT: downloadTXT,
-    escapeHTML: escapeHTML
+    escapeHTML: escapeHTML,
+    isPaid: isPaid,
+    hasUsedFreeProject: hasUsedFreeProject
   };
 })();
