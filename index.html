@@ -124,7 +124,7 @@
 
 <script src="shared/colorm.js"></script>
 <script>
-ColorM.renderHeader('cmHeader', null, {base:'', tabs:false, projectBar:false});
+ColorM.renderHeader('cmHeader', null, {base:'', tabs:false, projectBar:false, home:false});
 function refreshHubProjectName(){
   const p = ColorM.getProject();
   document.getElementById('hubProjectName').value = p.projectName || ColorM.DEFAULT_PROJECT_NAME;
