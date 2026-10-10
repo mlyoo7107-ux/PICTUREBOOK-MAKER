@@ -26,7 +26,7 @@ button,input,select,textarea{font:inherit}
 
 /* ---------- 상단 고정 바 + 단계 탭 (시리즈 공통 포맷) ---------- */
 #cmHeader{display:contents}
-.top-bar{position:sticky;top:0;z-index:41;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 24px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-bar{position:sticky;top:0;z-index:41;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 24px;background:#fff;border-bottom:1px solid var(--line)}
 .top-bar-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
 .top-logo{height:40px;width:auto;display:block}
 .app-name{color:var(--lv);font-size:14px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
