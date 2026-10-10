@@ -306,14 +306,14 @@ const ColorM = (function () {
         '</a>' +
       '</div>' +
       '<div class="top-bar-links" id="cmTopBarLinks">' +
-        '<a href="' + GALLERY_URL + '" target="_blank" rel="noopener">작품 갤러리</a>' +
-        '<a href="https://colorm.net" target="_blank" rel="noopener">COLOR.M 홈페이지</a>' +
-        (opts.home === false ? '' : '<a href="' + base + 'index.html">홈</a>') +
-        '<a href="' + base + 'summary/index.html">전체 결과</a>' +
-        '<hr>' +
         '<button type="button" id="cmLoadBtn">불러오기</button>' +
         '<button type="button" id="cmSaveBtn">저장</button>' +
+        '<a href="' + base + 'summary/index.html">전체 결과</a>' +
         '<button type="button" id="cmNewBtn">새 프로젝트</button>' +
+        '<hr>' +
+        '<a href="' + GALLERY_URL + '" target="_blank" rel="noopener">작품 갤러리</a>' +
+        (opts.home === false ? '' : '<a href="' + base + 'index.html">홈</a>') +
+        '<a href="https://colorm.net" target="_blank" rel="noopener">COLOR.M 홈페이지</a>' +
         '<input type="file" id="cmLoadFile" accept=".json,application/json" hidden>' +
       '</div>' +
       '<button type="button" class="menu-toggle" id="cmMenuToggle" aria-haspopup="true" aria-expanded="false" aria-label="메뉴"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>' +
