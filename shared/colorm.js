@@ -304,17 +304,19 @@ const ColorM = (function () {
           '<img class="top-logo" src="' + logoSrc + '" alt="COLOR.M">' +
           '<span class="app-name">마음색 그림책 메이커</span>' +
         '</a>' +
-        '<a class="home-badge" href="https://colorm.net" target="_blank" rel="noopener" aria-label="COLOR.M 전체 서비스 바로가기" title="COLOR.M 전체 서비스 바로가기 (colorm.net)"><svg width="13" height="13" viewBox="0 0 24 24" fill="white"><circle cx="5" cy="5" r="2.2"/><circle cx="12" cy="5" r="2.2"/><circle cx="19" cy="5" r="2.2"/><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="12" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/></svg></a>' +
       '</div>' +
       '<div class="top-bar-links" id="cmTopBarLinks">' +
         '<a href="' + GALLERY_URL + '" target="_blank" rel="noopener">작품 갤러리</a>' +
+        '<a href="https://colorm.net" target="_blank" rel="noopener">COLOR.M 홈페이지</a>' +
         (opts.home === false ? '' : '<a href="' + base + 'index.html">홈</a>') +
         '<a href="' + base + 'summary/index.html">전체 결과</a>' +
+        '<hr>' +
         '<button type="button" id="cmLoadBtn">불러오기</button>' +
         '<button type="button" id="cmSaveBtn">저장</button>' +
         '<button type="button" id="cmNewBtn">새 프로젝트</button>' +
         '<input type="file" id="cmLoadFile" accept=".json,application/json" hidden>' +
       '</div>' +
+      '<button type="button" class="menu-toggle" id="cmMenuToggle" aria-haspopup="true" aria-expanded="false" aria-label="메뉴"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>' +
       '</div>' +
       (opts.tabs === false ? '' : '<nav class="step-tabs" id="cmStepTabs">' + tabsHTML + '</nav>') +
       (!opts.projectBar ? '' :
@@ -348,6 +350,17 @@ const ColorM = (function () {
     }
     syncTopBarHeight();
     window.addEventListener('resize', syncTopBarHeight);
+
+    (function () {
+      const btn = document.getElementById('cmMenuToggle');
+      const menu = document.getElementById('cmTopBarLinks');
+      if (!btn || !menu) return;
+      function close() { menu.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+      function open() { menu.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+      btn.addEventListener('click', function (e) { e.stopPropagation(); menu.classList.contains('open') ? close() : open(); });
+      document.addEventListener('click', function (e) { if (menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
     mountToTop();
     mountFooter(base, logoSrc);
   }
