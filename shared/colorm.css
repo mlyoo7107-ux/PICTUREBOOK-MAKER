@@ -26,14 +26,16 @@ button,input,select,textarea{font:inherit}
 
 /* ---------- 상단 고정 바 + 단계 탭 (시리즈 공통 포맷) ---------- */
 #cmHeader{display:contents}
-.top-bar{position:sticky;top:0;z-index:41;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 24px;background:#fff;border-bottom:1px solid var(--line)}
-.top-bar-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.head-row1{position:sticky;top:0;z-index:41;display:flex;align-items:center;flex-wrap:nowrap;gap:22px;padding:12px 24px;background:#fff;border-bottom:1px solid var(--line)}
+.top-bar{display:contents}
+.top-bar-brand{display:flex;align-items:center;gap:14px;text-decoration:none;order:0}
 .top-logo{height:40px;width:auto;display:block}
 .app-name{color:var(--lv);font-size:14px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
-.top-bar-links{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 24px;background:#fff;border-bottom:1px solid var(--line)}
+.top-bar-links{display:contents}
+.top-bar-links>*{order:1}
 .top-bar-links a,.top-bar-links button{font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
 .top-bar-links a:hover,.top-bar-links button:hover{color:var(--m)}
-.home-badge{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--m)}
+.home-badge{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--m);order:2;margin-left:auto}
 .home-badge:hover{background:var(--m-hover)}
 
 .step-tabs{position:sticky;top:var(--topbar-h);z-index:40;display:flex;gap:4px;overflow-x:auto;padding:14px 24px;max-width:1240px;margin:0 auto;background:var(--bg);-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -318,14 +320,16 @@ footer.site-footer .biz-info p{margin:8px 0 0;font-size:12.5px;line-height:1.8}
   .download-actions .btn,.step-nav .btn{flex:1;min-height:46px}
 }
 @media(max-width:640px){
-  .top-bar{padding:10px 16px}
+  .head-row1{display:block;position:static;padding:0;gap:0}
+  .top-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:41;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line)}
   .top-logo{height:32px}
   .app-name{display:none}
   .step-tabs{padding:10px 16px}
   .card{padding:20px}
-  .top-bar-links{gap:9px;padding:8px 16px}
+  .top-bar-links{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:8px 16px;background:#fff;border-bottom:1px solid var(--line)}
+  .top-bar-links>*{order:0}
   .top-bar-links a,.top-bar-links button{font-size:11.5px}
-  .home-badge{width:36px;height:36px}
+  .home-badge{width:36px;height:36px;margin-left:0}
   .home-badge svg{width:17px;height:17px}
 }
 
