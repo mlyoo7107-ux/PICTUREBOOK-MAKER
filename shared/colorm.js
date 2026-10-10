@@ -303,16 +303,16 @@ const ColorM = (function () {
           '<img class="top-logo" src="' + logoSrc + '" alt="COLOR.M">' +
           '<span class="app-name">마음색 그림책 메이커</span>' +
         '</a>' +
-        '<div class="top-bar-links">' +
-          '<a href="' + GALLERY_URL + '" target="_blank" rel="noopener">작품 갤러리</a>' +
-          (opts.home === false ? '' : '<a href="' + base + 'index.html">홈</a>') +
-          '<a href="' + base + 'summary/index.html">전체 결과</a>' +
-          '<button type="button" id="cmLoadBtn">불러오기</button>' +
-          '<button type="button" id="cmSaveBtn">저장</button>' +
-          '<button type="button" id="cmNewBtn">새 프로젝트</button>' +
-          '<input type="file" id="cmLoadFile" accept=".json,application/json" hidden>' +
-          '<a class="home-badge" href="https://colorm.net" target="_blank" rel="noopener" aria-label="홈페이지"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/></svg></a>' +
-        '</div>' +
+        '<a class="home-badge" href="https://colorm.net" target="_blank" rel="noopener" aria-label="홈페이지"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/></svg></a>' +
+      '</div>' +
+      '<div class="top-bar-links" id="cmTopBarLinks">' +
+        '<a href="' + GALLERY_URL + '" target="_blank" rel="noopener">작품 갤러리</a>' +
+        (opts.home === false ? '' : '<a href="' + base + 'index.html">홈</a>') +
+        '<a href="' + base + 'summary/index.html">전체 결과</a>' +
+        '<button type="button" id="cmLoadBtn">불러오기</button>' +
+        '<button type="button" id="cmSaveBtn">저장</button>' +
+        '<button type="button" id="cmNewBtn">새 프로젝트</button>' +
+        '<input type="file" id="cmLoadFile" accept=".json,application/json" hidden>' +
       '</div>' +
       (opts.tabs === false ? '' : '<nav class="step-tabs" id="cmStepTabs">' + tabsHTML + '</nav>') +
       (!opts.projectBar ? '' :
@@ -338,8 +338,10 @@ const ColorM = (function () {
     if (opts.side !== false && STEPS.some(function (x) { return x.key === activeKey; })) renderSideCard(activeKey, base);
 
     const topBar = document.getElementById('cmTopBar');
+    const topBarLinks = document.getElementById('cmTopBarLinks');
     function syncTopBarHeight() {
-      document.documentElement.style.setProperty('--topbar-h', topBar.offsetHeight + 'px');
+      const h = topBar.offsetHeight + (topBarLinks ? topBarLinks.offsetHeight : 0);
+      document.documentElement.style.setProperty('--topbar-h', h + 'px');
     }
     syncTopBarHeight();
     window.addEventListener('resize', syncTopBarHeight);
