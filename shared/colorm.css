@@ -325,6 +325,8 @@ footer.site-footer .biz-info p{margin:8px 0 0;font-size:12.5px;line-height:1.8}
   .card{padding:20px}
   .top-bar-links{gap:9px}
   .top-bar-links a,.top-bar-links button{font-size:11px}
+  .home-badge{width:36px;height:36px}
+  .home-badge svg{width:17px;height:17px}
 }
 
 /* ---------- PDF 저장용 인쇄 스타일 ---------- */
