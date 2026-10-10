@@ -33,7 +33,7 @@ button,input,select,textarea{font:inherit}
 .app-name{color:var(--lv);font-size:14px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
 .menu-toggle{display:none}
 .top-bar-links{display:contents}
-.top-bar-links a,.top-bar-links button{font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:none;white-space:nowrap}
+.top-bar-links a,.top-bar-links button{font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:none;white-space:nowrap;text-align:left}
 .top-bar-links a:hover,.top-bar-links button:hover{color:var(--m)}
 .top-bar-links hr{display:none}
 
