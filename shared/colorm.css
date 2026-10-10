@@ -30,11 +30,11 @@ button,input,select,textarea{font:inherit}
 .top-bar-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
 .top-logo{height:40px;width:auto;display:block}
 .app-name{color:var(--lv);font-size:14px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
-.top-bar-links{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top-bar-links{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 24px;background:#fff;border-bottom:1px solid var(--line)}
 .top-bar-links a,.top-bar-links button{font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
 .top-bar-links a:hover,.top-bar-links button:hover{color:var(--m)}
-.top-bar-links .home-badge{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--m);margin-left:auto}
-.top-bar-links .home-badge:hover{background:var(--m-hover)}
+.home-badge{display:inline-flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px;border-radius:50%;background:var(--m)}
+.home-badge:hover{background:var(--m-hover)}
 
 .step-tabs{position:sticky;top:var(--topbar-h);z-index:40;display:flex;gap:4px;overflow-x:auto;padding:14px 24px;max-width:1240px;margin:0 auto;background:var(--bg);-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .step-tabs::-webkit-scrollbar{display:none}
@@ -323,8 +323,8 @@ footer.site-footer .biz-info p{margin:8px 0 0;font-size:12.5px;line-height:1.8}
   .app-name{display:none}
   .step-tabs{padding:10px 16px}
   .card{padding:20px}
-  .top-bar-links{gap:9px}
-  .top-bar-links a,.top-bar-links button{font-size:11px}
+  .top-bar-links{gap:9px;padding:8px 16px}
+  .top-bar-links a,.top-bar-links button{font-size:11.5px}
   .home-badge{width:36px;height:36px}
   .home-badge svg{width:17px;height:17px}
 }
