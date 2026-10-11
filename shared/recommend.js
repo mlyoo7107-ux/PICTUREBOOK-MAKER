@@ -124,6 +124,7 @@ const ColorMRecommend = (function () {
   }
   const COLOR_BY_MOOD = { warm: '따뜻한 레드와 오렌지 톤', bright: '부드러운 노랑과 크림 톤', mystic: '깊은 남색과 별빛 톤', fun: '맑은 하늘색과 민트 톤', calm: '파스텔 라벤더와 핑크 톤' };
   const BG_BY_MOOD = { warm: '햇살이 비치는 초록 들판', bright: '색색의 꽃이 핀 마을 풍경', mystic: '몽환적인 구름과 빛무리', fun: '색색의 꽃이 핀 마을 풍경', calm: '잔잔한 바닷가 노을' };
+  const STYLE_BY_MOOD = { warm: '단색 배경', bright: '작은 패턴 배경', mystic: '은은한 그라데이션', fun: '작은 패턴 배경', calm: '단색 배경' };
 
   function lightFor(time, mood) {
     const t = String(time || '');
@@ -401,7 +402,7 @@ const ColorMRecommend = (function () {
 
     cover: {
       anchor: function () { const e = $('sceneDesc'); return e && e.closest('section'); },
-      what: '표지 장면·배경·컬러 분위기·조명·구도를',
+      what: '표지 장면·배경·컬러 분위기·조명·구도, 뒷표지·간지 배경 스타일을',
       basis: function () {
         const pr = project();
         return [val('title') || ((pr.story || {}).titles || [])[0], (pr.character || {}).name, (pr.plan || {}).mood];
@@ -420,7 +421,9 @@ const ColorMRecommend = (function () {
           iDistance: '미디엄 샷',
           iAngle: '정면 시점',
           ratio: '3:4',
-          textInImage: '없음 (기본)'
+          textInImage: '없음 (기본)',
+          backCoverStyle: STYLE_BY_MOOD[mk],
+          halfTitleStyle: STYLE_BY_MOOD[mk]
         };
         const sug = titleSuggestions(pr);
         const t = ((pr.story || {}).titles || [])[0] || (sug[0] && sug[0].text);
