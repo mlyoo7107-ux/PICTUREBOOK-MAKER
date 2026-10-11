@@ -20,7 +20,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-padding-top:calc(var(--topbar-h) + 76px)}
-body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg);word-break:keep-all}
+body{margin:0;font-family:'Pretendard',Arial,"Noto Sans KR",sans-serif;color:var(--ink);background:var(--bg);word-break:keep-all}
 button,input,select,textarea{font:inherit}
 .hero,.wrap,footer{width:min(920px,calc(100% - 32px));margin:auto}
 
