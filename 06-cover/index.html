@@ -55,6 +55,18 @@
 <label>이미지 안 글자 <small>(제목 글자를 AI가 직접 그리게 할지 정해보세요)</small><select id="textInImage"><option selected>없음 (기본)</option><option>있음</option></select></label>
 </section>
 
+<section class="card">
+<div class="step"><span>STEP 04</span><h2>간지(속표지) 설정</h2></div>
+<p class="help">표지를 넘기면 나오는 페이지예요. 보통 제목만 깔끔하게 들어가고, 배경은 단색·그라데이션·작은 패턴 중에서 골라요.</p>
+<label>간지 배경 스타일<select id="halfTitleStyle">
+<option selected>단색 배경</option>
+<option>은은한 그라데이션</option>
+<option>작은 패턴 배경</option>
+<option value="직접 입력">+ 직접 입력</option>
+</select></label>
+<label id="halfTitleCustomWrap" hidden>배경 스타일 직접 입력<input id="halfTitleStyleCustom" placeholder="예: 반짝이는 별이 흩뿌려진 짙은 남색 배경"></label>
+</section>
+
 <button class="btn primary big" type="submit">표지 프롬프트 만들기</button>
 </form>
 
@@ -84,6 +96,14 @@
 <div id="backPrompt" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('backPrompt')">복사하기</button>
 <span class="lang-tag lang-en">🇺🇸 English</span>
 <div id="backPromptEN" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('backPromptEN')">Copy</button>
+</article>
+<article class="result">
+<h3>⑤ 간지 프롬프트</h3>
+<p class="help" style="margin:0 0 6px">표지를 넘기면 나오는 페이지예요. 삽화 없이 배경만 채우고, 제목 글자는 넓은 여백에 캔바에서 얹어요.</p>
+<span class="lang-tag lang-kr">🇰🇷 한국어</span>
+<div id="halfTitlePrompt" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('halfTitlePrompt')">복사하기</button>
+<span class="lang-tag lang-en">🇺🇸 English</span>
+<div id="halfTitlePromptEN" class="box"></div><button class="copy" type="button" onclick="ColorM.copyBox('halfTitlePromptEN')">Copy</button>
 </article>
 </div>
 
@@ -170,6 +190,9 @@ function fillCoverDefaults(){
 }
 fillCoverDefaults();
 
+$('halfTitleStyle').addEventListener('change', function(){
+  $('halfTitleCustomWrap').hidden = (this.value !== '직접 입력');
+});
 
 $('coverForm').addEventListener('submit', function(e){
   e.preventDefault();
@@ -236,6 +259,42 @@ $('coverForm').addEventListener('submit', function(e){
     `Art style: ${ColorMEN.fixed(backArt)}, the same style as the front cover`,
     `Aspect ratio: ${d.ratio} / Text in image: none`
   ].join('\n');
+  const HALF_TITLE_STYLE_MAP = {
+    '단색 배경': { kr: '부드러운 단색 배경', en: 'a soft solid-color background' },
+    '은은한 그라데이션': { kr: '은은한 그라데이션 배경', en: 'a subtle gradient background' },
+    '작은 패턴 배경': { kr: '작고 은은하게 반복되는 패턴 배경 (예: 작은 별, 나뭇잎, 물방울 무늬)', en: 'a subtle small repeating pattern background (e.g. tiny stars, leaves, or dot motifs)' }
+  };
+  const htStyleKey = $('halfTitleStyle').value;
+  const htCustom = $('halfTitleStyleCustom').value.trim();
+  let halfTitleColorKR, halfTitleColorEN;
+  if (htStyleKey === '직접 입력' && htCustom) {
+    halfTitleColorKR = htCustom;
+    halfTitleColorEN = ColorMEN.translate(htCustom);
+  } else {
+    const htStyle = HALF_TITLE_STYLE_MAP[htStyleKey] || HALF_TITLE_STYLE_MAP['단색 배경'];
+    halfTitleColorKR = mindOn
+      ? ("마음색 '"+mm.colorName+"'("+mm.color+") 톤의 "+htStyle.kr)
+      : (d.color+' 톤의 '+htStyle.kr);
+    halfTitleColorEN = mindOn
+      ? (htStyle.en+" in the heart color '"+ColorMMind.colorNameEN()+"' ("+mm.color+")")
+      : (htStyle.en+' in '+ColorMEN.translate(d.color)+' tones');
+  }
+  const halfTitlePrompt = [
+    `그림책 간지(속표지) 이미지를 그려줘. 제목: ${d.title}${d.subtitle?' / 부제: '+d.subtitle:''}`,
+    '구성: 삽화나 캐릭터 없이 배경만 채우고, 중앙에 제목 글자를 넣을 수 있도록 아주 넓은 여백을 남겨줘.',
+    `배경: ${halfTitleColorKR}`,
+    `화풍: ${backArt}, 표지와 같은 분위기`,
+    `이미지 비율: ${d.ratio} / 이미지 안 글자: 없음 (제목은 캔바에서 글자로 얹어요)`
+  ].join('\n');
+  const halfTitlePromptEN = [
+    `Create a picture book half-title page image. Title: ${d.title}${d.subtitle?' / Subtitle: '+d.subtitle:''}`,
+    'Composition: no illustration or characters — just a background, with very wide empty space in the center reserved for the title text.',
+    `Background: ${halfTitleColorEN}`,
+    `Art style: ${ColorMEN.fixed(backArt)}, matching the cover's mood`,
+    `Aspect ratio: ${d.ratio} / Text in image: none`
+  ].join('\n');
+  $('halfTitlePrompt').textContent = halfTitlePrompt;
+  $('halfTitlePromptEN').textContent = halfTitlePromptEN;
   $('backPrompt').textContent = backPrompt;
   $('backPromptEN').textContent = backPromptEN;
   $('coverDesc').textContent = coverDesc;
@@ -246,7 +305,7 @@ $('coverForm').addEventListener('submit', function(e){
   $('results').classList.remove('hidden');
 
   if($('title').value.trim()) ColorM.setBookTitle($('title').value.trim());
-  ColorM.saveStep('cover', Object.assign({}, d, {coverDesc, coverPrompt, coverPromptEN, lockLine: COVER_LOCK_LINE, lockLineEN: COVER_LOCK_LINE_EN, backPrompt, backPromptEN}));
+  ColorM.saveStep('cover', Object.assign({}, d, {coverDesc, coverPrompt, coverPromptEN, lockLine: COVER_LOCK_LINE, lockLineEN: COVER_LOCK_LINE_EN, backPrompt, backPromptEN, halfTitleStyle: htStyleKey, halfTitleStyleCustom: htCustom, halfTitlePrompt, halfTitlePromptEN}));
 
   setTimeout(()=>$('results').scrollIntoView({behavior:'smooth',block:'start'}),50);
 });
@@ -259,7 +318,9 @@ function buildDownloadText(){
     '[캐릭터 일관성 유지 문장 · 한국어]', $('lockLine').textContent.trim(),'',
     '[캐릭터 일관성 유지 문장 · English]', $('lockLineEN').textContent.trim(),'',
     '[뒷표지 프롬프트 · 한국어]', $('backPrompt').textContent.trim(),'',
-    '[뒷표지 프롬프트 · English]', $('backPromptEN').textContent.trim()
+    '[뒷표지 프롬프트 · English]', $('backPromptEN').textContent.trim(),'',
+    '[간지 프롬프트 · 한국어]', $('halfTitlePrompt').textContent.trim(),'',
+    '[간지 프롬프트 · English]', $('halfTitlePromptEN').textContent.trim()
   ].join('\n');
 }
 function downloadTXT(){
