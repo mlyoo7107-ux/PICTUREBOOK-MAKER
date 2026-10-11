@@ -149,7 +149,8 @@ function resolveBgColor(styleKey, custom, mindOn, mm, fallbackColor){
     return { kr: custom, en: ColorMEN.translate(custom) };
   }
   const style = BG_STYLE_MAP[styleKey] || BG_STYLE_MAP['단색 배경'];
-  const kr = mindOn ? ("마음색 '"+mm.colorName+"'("+mm.color+") 톤의 "+style.kr) : (fallbackColor+' 톤의 '+style.kr);
+  const colorPhrase = /톤$/.test(fallbackColor) ? fallbackColor : (fallbackColor+' 톤');
+  const kr = mindOn ? ("마음색 '"+mm.colorName+"'("+mm.color+") 톤의 "+style.kr) : (colorPhrase+'의 '+style.kr);
   const en = mindOn ? (style.en+" in the heart color '"+ColorMMind.colorNameEN()+"' ("+mm.color+")") : (style.en+' in '+ColorMEN.translate(fallbackColor)+' tones');
   return { kr, en };
 }
