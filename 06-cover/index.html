@@ -56,7 +56,19 @@
 </section>
 
 <section class="card">
-<div class="step"><span>STEP 04</span><h2>간지(속표지) 설정</h2></div>
+<div class="step"><span>STEP 04</span><h2>뒷표지 설정</h2></div>
+<p class="help">작은 소품이나 주인공 뒷모습만 작게 두고, 나머지는 글자를 위한 여백으로 남기는 구성이에요. 배경은 단색·그라데이션·작은 패턴 중에서 골라요.</p>
+<label>뒷표지 배경 스타일<select id="backCoverStyle">
+<option selected>단색 배경</option>
+<option>은은한 그라데이션</option>
+<option>작은 패턴 배경</option>
+<option value="직접 입력">+ 직접 입력</option>
+</select></label>
+<label id="backCoverCustomWrap" hidden>배경 스타일 직접 입력<input id="backCoverStyleCustom" placeholder="예: 반짝이는 별이 흩뿌려진 짙은 남색 배경"></label>
+</section>
+
+<section class="card">
+<div class="step"><span>STEP 05</span><h2>간지(속표지) 설정</h2></div>
 <p class="help">표지를 넘기면 나오는 페이지예요. 보통 제목만 깔끔하게 들어가고, 배경은 단색·그라데이션·작은 패턴 중에서 골라요.</p>
 <label>간지 배경 스타일<select id="halfTitleStyle">
 <option selected>단색 배경</option>
@@ -127,6 +139,20 @@
 const $=id=>document.getElementById(id);
 const COVER_LOCK_LINE = '첨부한 기준 캐릭터의 얼굴, 헤어, 의상, 소품, 신체 비율, 대표 색상은 변경하지 말고 유지해주세요.';
 const COVER_LOCK_LINE_EN = "Keep the reference character's face, hair, outfit, props, body proportions, and main colors unchanged.";
+const BG_STYLE_MAP = {
+  '단색 배경': { kr: '부드러운 단색 배경', en: 'a soft solid-color background' },
+  '은은한 그라데이션': { kr: '은은한 그라데이션 배경', en: 'a subtle gradient background' },
+  '작은 패턴 배경': { kr: '작고 은은하게 반복되는 패턴 배경 (예: 작은 별, 나뭇잎, 물방울 무늬)', en: 'a subtle small repeating pattern background (e.g. tiny stars, leaves, or dot motifs)' }
+};
+function resolveBgColor(styleKey, custom, mindOn, mm, fallbackColor){
+  if (styleKey === '직접 입력' && custom) {
+    return { kr: custom, en: ColorMEN.translate(custom) };
+  }
+  const style = BG_STYLE_MAP[styleKey] || BG_STYLE_MAP['단색 배경'];
+  const kr = mindOn ? ("마음색 '"+mm.colorName+"'("+mm.color+") 톤의 "+style.kr) : (fallbackColor+' 톤의 '+style.kr);
+  const en = mindOn ? (style.en+" in the heart color '"+ColorMMind.colorNameEN()+"' ("+mm.color+")") : (style.en+' in '+ColorMEN.translate(fallbackColor)+' tones');
+  return { kr, en };
+}
 ColorM.renderHeader('cmHeader','cover');
 ColorM.applyDrops(ColorMPresets.cover);
 ColorMRecommend.mount('cover');
@@ -190,6 +216,9 @@ function fillCoverDefaults(){
 }
 fillCoverDefaults();
 
+$('backCoverStyle').addEventListener('change', function(){
+  $('backCoverCustomWrap').hidden = (this.value !== '직접 입력');
+});
 $('halfTitleStyle').addEventListener('change', function(){
   $('halfTitleCustomWrap').hidden = (this.value !== '직접 입력');
 });
@@ -239,57 +268,37 @@ $('coverForm').addEventListener('submit', function(e){
   const mindOn = typeof ColorMMind !== 'undefined' && ColorMMind.hasColor();
   const mm = mindOn ? ColorMMind.get() : null;
   const backArt = (ch && ch.artStyle) ? ch.artStyle : '그림책 일러스트';
-  const backColorKR = mindOn
-    ? ("마음색 '"+mm.colorName+"'("+mm.color+")의 부드러운 단색 배경")
-    : (d.color+' 분위기의 부드러운 단색 배경');
-  const backColorEN = mindOn
-    ? ("a soft solid background in the heart color '"+ColorMMind.colorNameEN()+"' ("+mm.color+")")
-    : ('a soft solid background in '+ColorMEN.translate(d.color)+' tones');
+  const bcStyleKey = $('backCoverStyle').value;
+  const bcCustom = $('backCoverStyleCustom').value.trim();
+  const bcColor = resolveBgColor(bcStyleKey, bcCustom, mindOn, mm, d.color);
   const backPrompt = [
     `그림책 뒷표지 그림을 그려줘. 제목: ${d.title}`,
     '구성: 이야기 속 작은 소품이나 주인공의 뒷모습 하나만 화면 가운데에 작게 두고, 나머지는 글자를 넣을 수 있게 넓은 여백으로 남겨줘.',
-    `색감: ${backColorKR}`,
+    `색감: ${bcColor.kr}`,
     `화풍: ${backArt}, 앞표지와 같은 화풍`,
     `이미지 비율: ${d.ratio} / 이미지 안 글자: 없음 (작가의 말은 캔바에서 글자로 얹어요)`
   ].join('\n');
   const backPromptEN = [
     `Create a children's picture book back cover illustration. Title: ${d.title}`,
     'Composition: only one small story prop or the main character seen from behind, placed small in the center, leaving wide empty space for text.',
-    `Color: ${backColorEN}`,
+    `Color: ${bcColor.en}`,
     `Art style: ${ColorMEN.fixed(backArt)}, the same style as the front cover`,
     `Aspect ratio: ${d.ratio} / Text in image: none`
   ].join('\n');
-  const HALF_TITLE_STYLE_MAP = {
-    '단색 배경': { kr: '부드러운 단색 배경', en: 'a soft solid-color background' },
-    '은은한 그라데이션': { kr: '은은한 그라데이션 배경', en: 'a subtle gradient background' },
-    '작은 패턴 배경': { kr: '작고 은은하게 반복되는 패턴 배경 (예: 작은 별, 나뭇잎, 물방울 무늬)', en: 'a subtle small repeating pattern background (e.g. tiny stars, leaves, or dot motifs)' }
-  };
   const htStyleKey = $('halfTitleStyle').value;
   const htCustom = $('halfTitleStyleCustom').value.trim();
-  let halfTitleColorKR, halfTitleColorEN;
-  if (htStyleKey === '직접 입력' && htCustom) {
-    halfTitleColorKR = htCustom;
-    halfTitleColorEN = ColorMEN.translate(htCustom);
-  } else {
-    const htStyle = HALF_TITLE_STYLE_MAP[htStyleKey] || HALF_TITLE_STYLE_MAP['단색 배경'];
-    halfTitleColorKR = mindOn
-      ? ("마음색 '"+mm.colorName+"'("+mm.color+") 톤의 "+htStyle.kr)
-      : (d.color+' 톤의 '+htStyle.kr);
-    halfTitleColorEN = mindOn
-      ? (htStyle.en+" in the heart color '"+ColorMMind.colorNameEN()+"' ("+mm.color+")")
-      : (htStyle.en+' in '+ColorMEN.translate(d.color)+' tones');
-  }
+  const htColor = resolveBgColor(htStyleKey, htCustom, mindOn, mm, d.color);
   const halfTitlePrompt = [
     `그림책 간지(속표지) 이미지를 그려줘. 제목: ${d.title}${d.subtitle?' / 부제: '+d.subtitle:''}`,
     '구성: 삽화나 캐릭터 없이 배경만 채우고, 중앙에 제목 글자를 넣을 수 있도록 아주 넓은 여백을 남겨줘.',
-    `배경: ${halfTitleColorKR}`,
+    `배경: ${htColor.kr}`,
     `화풍: ${backArt}, 표지와 같은 분위기`,
     `이미지 비율: ${d.ratio} / 이미지 안 글자: 없음 (제목은 캔바에서 글자로 얹어요)`
   ].join('\n');
   const halfTitlePromptEN = [
     `Create a picture book half-title page image. Title: ${d.title}${d.subtitle?' / Subtitle: '+d.subtitle:''}`,
     'Composition: no illustration or characters — just a background, with very wide empty space in the center reserved for the title text.',
-    `Background: ${halfTitleColorEN}`,
+    `Background: ${htColor.en}`,
     `Art style: ${ColorMEN.fixed(backArt)}, matching the cover's mood`,
     `Aspect ratio: ${d.ratio} / Text in image: none`
   ].join('\n');
@@ -305,7 +314,7 @@ $('coverForm').addEventListener('submit', function(e){
   $('results').classList.remove('hidden');
 
   if($('title').value.trim()) ColorM.setBookTitle($('title').value.trim());
-  ColorM.saveStep('cover', Object.assign({}, d, {coverDesc, coverPrompt, coverPromptEN, lockLine: COVER_LOCK_LINE, lockLineEN: COVER_LOCK_LINE_EN, backPrompt, backPromptEN, halfTitleStyle: htStyleKey, halfTitleStyleCustom: htCustom, halfTitlePrompt, halfTitlePromptEN}));
+  ColorM.saveStep('cover', Object.assign({}, d, {coverDesc, coverPrompt, coverPromptEN, lockLine: COVER_LOCK_LINE, lockLineEN: COVER_LOCK_LINE_EN, backPrompt, backPromptEN, backCoverStyle: bcStyleKey, backCoverStyleCustom: bcCustom, halfTitleStyle: htStyleKey, halfTitleStyleCustom: htCustom, halfTitlePrompt, halfTitlePromptEN}));
 
   setTimeout(()=>$('results').scrollIntoView({behavior:'smooth',block:'start'}),50);
 });
