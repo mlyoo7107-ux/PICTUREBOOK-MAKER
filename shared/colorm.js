@@ -24,12 +24,16 @@ const ColorM = (function () {
   function hasUsedFreeProject() { try { return localStorage.getItem('cmPbmFreeUsed') === '1'; } catch (e) { return false; } }
   function markFreeProjectUsed() { if (isPaid()) return; try { localStorage.setItem('cmPbmFreeUsed', '1'); } catch (e) {} }
   // 다른 기기(폰 등)에서 쓰기 위한 개인 링크: ?order=<주문번호> — 결제 성공 화면에서 자동으로 만들어줘요.
+  // 이 확인은 네트워크 요청이라 즉시 끝나지 않으므로, 끝날 때까지의 Promise를 저장해 두고
+  // 결제 여부를 따지는 곳(예: newProject)에서 먼저 기다리게 합니다. 그렇지 않으면 확인이 끝나기도
+  // 전에 "무료 체험 다 썼어요" 안내가 먼저 떠버리는 경쟁 상태(race condition)가 생겨요.
+  let orderUnlockReady = Promise.resolve();
   (function applyOrderUnlockParam() {
     try {
       const q = new URLSearchParams(location.search);
       const orderId = q.get('order');
       if (!orderId) return;
-      fetch(PAYMENT_STATUS_API_URL + '?orderId=' + encodeURIComponent(orderId))
+      orderUnlockReady = fetch(PAYMENT_STATUS_API_URL + '?orderId=' + encodeURIComponent(orderId))
         .then((r) => r.json()).then((data) => {
           if (data && data.paid && data.plan === 'pbm') localStorage.setItem('cmPbmPaid', '1');
         }).catch(() => {}).finally(() => {
@@ -267,7 +271,8 @@ const ColorM = (function () {
     reader.readAsText(file);
   }
 
-  function newProject() {
+  async function newProject() {
+    await orderUnlockReady;
     if (hasUsedFreeProject() && !isPaid()) {
       alert('무료 체험(프로젝트 1개)을 이미 사용하셨어요. 새 프로젝트를 시작하려면 구매가 필요해요 — 1회 결제로 프로젝트 제한 없이 평생 이용할 수 있어요.');
       location.href = LANDING_URL;
