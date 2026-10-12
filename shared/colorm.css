@@ -35,6 +35,8 @@ button,input,select,textarea{font:inherit}
 .top-bar-links{display:contents}
 .top-bar-links a,.top-bar-links button{font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:none;border:0;padding:8px 12px;border-radius:999px;cursor:pointer;text-decoration:none;white-space:nowrap;text-align:left;transition:background .15s,color .15s}
 .top-bar-links a:hover,.top-bar-links button:hover{background:var(--soft);color:var(--m)}
+.top-bar-links .menu-danger{color:#c43d3d}
+.top-bar-links .menu-danger:hover{background:#fdeaea;color:#a32d2d}
 .top-bar-links hr{display:none}
 
 .step-tabs{position:sticky;top:var(--topbar-h);z-index:40;display:flex;gap:4px;overflow-x:auto;padding:14px 24px;max-width:1240px;margin:0 auto;background:var(--bg);-webkit-overflow-scrolling:touch;scrollbar-width:none}
