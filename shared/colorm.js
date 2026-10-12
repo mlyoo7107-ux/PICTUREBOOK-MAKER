@@ -324,7 +324,7 @@ const ColorM = (function () {
         '<button type="button" id="cmLoadBtn">불러오기</button>' +
         '<button type="button" id="cmSaveBtn">저장</button>' +
         '<a href="' + base + 'summary/index.html">전체 결과</a>' +
-        '<button type="button" id="cmNewBtn">새 프로젝트</button>' +
+        '<button type="button" id="cmNewBtn" class="menu-danger">새로 시작하기</button>' +
         '<hr>' +
         '<a href="' + GALLERY_URL + '" target="_blank" rel="noopener">작품 갤러리</a>' +
         (opts.home === false ? '' : '<a href="' + base + 'index.html">홈</a>') +
